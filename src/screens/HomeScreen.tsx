@@ -74,7 +74,7 @@ const HomeScreen = ({ userName }: { userName?: string }) => {
   };
 
   const handleVoiceCommands = () => {
-    setShowVoiceCommands(!showVoiceCommands);
+    setShowVoiceCommands(true);
   };
 
   const handleLogin = () => {
@@ -125,12 +125,15 @@ const HomeScreen = ({ userName }: { userName?: string }) => {
   ];
 
   const renderIcon = (iconName: string, color: string) => {
+    // Check if this is one of the features that should have half white background
+    const hasHalfWhiteBackground = iconName === 'cog' || iconName === 'moon-waning-crescent' || iconName === 'microphone' || iconName === 'star';
+    
     return (
-      <View style={[styles.featureIconBox, { backgroundColor: color + '20' }]}>
+      <View style={[styles.featureIconBox, { backgroundColor: hasHalfWhiteBackground ? 'rgba(255, 255, 255, 0.5)' : color + '20' }]}>
         <Icon 
           name={iconName} 
           size={24} 
-          color={color} 
+          color={hasHalfWhiteBackground ? color : color}
           style={styles.featureIconImage}
         />
       </View>
@@ -183,7 +186,11 @@ const HomeScreen = ({ userName }: { userName?: string }) => {
         </View>
         <View style={styles.headerRight}>
           <TouchableOpacity style={styles.searchIconContainer} onPress={toggleSearch}>
-            <Text style={[styles.searchIconText, { fontSize: isSmallScreen ? 18 : 20 }]}>🔍</Text>
+            <Icon 
+              name="magnify" 
+              size={isSmallScreen ? 18 : 20} 
+              color="#666666" 
+            />
           </TouchableOpacity>
         </View>
       </View>
@@ -210,11 +217,43 @@ const HomeScreen = ({ userName }: { userName?: string }) => {
 
         {/* Action Buttons */}
         <View style={styles.buttonRow}>
-          <TouchableOpacity style={[styles.featuresButton, { paddingVertical: isSmallScreen ? 12 : 15 }]}>
-            <Text style={[styles.featuresButtonText, { fontSize: dynamicSizes.buttonFontSize }]}>Features</Text>
+          <TouchableOpacity 
+            style={[
+              styles.featuresButton, 
+              { 
+                paddingVertical: isSmallScreen ? 12 : 15,
+                backgroundColor: !showVoiceCommands ? '#4CAF50' : '#FFFFFF',
+                borderWidth: !showVoiceCommands ? 0 : 2,
+                borderColor: !showVoiceCommands ? 'transparent' : '#4CAF50'
+              }
+            ]}
+            onPress={() => setShowVoiceCommands(false)}
+          >
+            <Text style={[
+              styles.featuresButtonText, 
+              { 
+                fontSize: dynamicSizes.buttonFontSize,
+                color: !showVoiceCommands ? '#FFFFFF' : '#4CAF50'
+              }
+            ]}>Features</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.voiceCommandsButton, { paddingVertical: isSmallScreen ? 12 : 15 }]} onPress={handleVoiceCommands}>
-            <Text style={[styles.voiceCommandsButtonText, { fontSize: dynamicSizes.buttonFontSize }]}>Voice Commands</Text>
+          <TouchableOpacity 
+            style={[
+              styles.voiceCommandsButton, 
+              { 
+                paddingVertical: isSmallScreen ? 12 : 15,
+                backgroundColor: showVoiceCommands ? '#4CAF50' : styles.voiceCommandsButton.backgroundColor
+              }
+            ]} 
+            onPress={handleVoiceCommands}
+          >
+            <Text style={[
+              styles.voiceCommandsButtonText, 
+              { 
+                fontSize: dynamicSizes.buttonFontSize,
+                color: showVoiceCommands ? '#FFFFFF' : styles.voiceCommandsButtonText.color
+              }
+            ]}>Voice Commands</Text>
           </TouchableOpacity>
         </View>
 
@@ -479,10 +518,18 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   dailyNotesCard: {
-    backgroundColor: '#E8E8E8',
+    backgroundColor: '#FFFFFF',
     borderRadius: 15,
     padding: 16,
     marginBottom: 25,
+    shadowColor: '#000000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
   dailyNotesHeader: {
     flexDirection: 'row',
@@ -546,10 +593,18 @@ const styles = StyleSheet.create({
   },
   featureCard: {
     width: (width - 50) / 2,
-    backgroundColor: '#E8E8E8',
+    backgroundColor: '#FFFFFF',
     borderRadius: 15,
     marginBottom: 15,
     alignItems: 'stretch',
+    shadowColor: '#000000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
   featureCardTopRow: {
     flexDirection: 'row',

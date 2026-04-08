@@ -104,6 +104,10 @@ const CustomBottomTab: React.FC<CustomBottomTabProps> = ({
               onPress={() => onTabPress(tab.name)}
               activeOpacity={0.7}
             >
+              {/* White Dot Indicator */}
+              {isActive && (
+                <View style={styles.whiteDotIndicator} />
+              )}
               <View style={[
                 styles.iconContainer,
                 isActive && styles.activeIconContainer
@@ -111,7 +115,7 @@ const CustomBottomTab: React.FC<CustomBottomTabProps> = ({
                 <Icon
                   name={tab.icon}
                   size={24}
-                  color={isActive ? '#FFFFFF' : '#FFFFFF'}
+                  color={isActive ? '#FFFFFF' : '#666666'}
                 />
               </View>
               <Text style={[
@@ -142,7 +146,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     height: TAB_BAR_HEIGHT,
-    backgroundColor: '#81C784',
+    backgroundColor: '#FFFFFF',
   },
   curvedOverlay: {
     position: 'absolute',
@@ -162,7 +166,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingTop: 15,
+    paddingTop: 20,
   },
   iconContainer: {
     justifyContent: 'center',
@@ -174,13 +178,21 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 11,
-    color: '#FFFFFF',
+    color: '#666666',
     textAlign: 'center',
     fontWeight: '500',
   },
   activeLabel: {
     color: '#FFFFFF',
     fontWeight: '600',
+  },
+  whiteDotIndicator: {
+    position: 'absolute',
+    top: 5,
+    width: 10,
+    height: 10,
+    backgroundColor: '#4CAF50',
+    borderRadius: 5,
   },
 });
 
